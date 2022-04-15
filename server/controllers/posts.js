@@ -41,23 +41,23 @@ export const updatePost = async (req, res) => {
 }
 
 export const deletePost = async (req, res) => {
-    const { id: _id } = req.params
+    const { id } = req.params
 
-    if(!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send(`There is no post with id: ${_id}`)
+    if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`There is no post with id: ${_id}`)
 
-    await PostMessage.findByIdAndRemove(_id)
+    await PostMessage.findByIdAndRemove(id)
 
     res.json({ message: 'Post deleted' })
 }
 
 export const likePost = async (req, res) => {
-    const { id: _id } = req.params
+    const { id } = req.params
 
-    if(!mongoose.Types.ObjectId.isValid(_id)) return res.status(404).send(`There is no post with id: ${_id}`)
+    if(!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`There is no post with id: ${_id}`)
 
-    const post = await PostMessage.findById(_id)
+    const post = await PostMessage.findById(id)
 
-    const updatedPost = await PostMessage.findByIdAndUpdate(_id, { ...post, likes: post.likes + 1 }, { new: true })
+    const updatedPost = await PostMessage.findByIdAndUpdate(id, { ...post, likes: post.likeCount + 1 }, { new: true })
 
     res.json(updatedPost)
 }
